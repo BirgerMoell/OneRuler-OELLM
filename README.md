@@ -12,6 +12,17 @@ This code is based on [RULER's Repo](https://github.com/NVIDIA/RULER).
 
 ![Micro-accuracy across context-lengths and languages for all NIAH tasksk](./misc/heatmap.png)
 
+## OpenEuroLLM language support
+
+This local fork adds runtime support for the 38 languages listed by the OpenEuroLLM tokenizer:
+
+* EU official plus English: `bg`, `hr`, `cs`, `da`, `nl`, `et`, `fi`, `fr`, `de`, `el`, `hu`, `ga`, `it`, `lv`, `lt`, `mt`, `pl`, `pt`, `ro`, `sk`, `sl`, `es`, `sv`, `en`
+* Additional European: `sq`, `eu`, `bs`, `ca`, `gl`, `is`, `lb`, `mk`, `no`, `ru`, `sr`, `tr`, `uk`, `cy`
+
+The original OneRuler resources are still used for languages that already shipped with the benchmark. Missing OpenEuroLLM languages are supported through `OneRuler/oellm_support.py`, which provides synthetic fallback prompts, synthetic distractor text, generated noun lists, generated POS vocabularies, punctuation handling, and translated `none` labels.
+
+These fallback resources are meant to make experiments runnable and reproducible. They should be replaced or validated with native-speaker prompt translations, real distractor texts, and real dictionaries before using the scores as a publishable multilingual benchmark.
+
 ## 🗃️ Data Generation
 
 1. Install requirement.txt

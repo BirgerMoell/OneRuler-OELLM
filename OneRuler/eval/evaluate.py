@@ -3,6 +3,11 @@ import os
 import json
 import re
 import unicodedata
+from pathlib import Path
+import sys
+
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from oellm_support import NONE_WORDS
 
 none_dict = {
     "en": ["none"],
@@ -32,6 +37,8 @@ none_dict = {
     "hi": ["कोई नहीं"],
     "da": ["ingen"]
 }
+
+none_dict.update(NONE_WORDS)
 
 
 

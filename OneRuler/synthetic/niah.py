@@ -39,6 +39,14 @@ import random
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")) 
 from tokenizer import select_tokenizer
+from oellm_support import (
+    is_oellm_language,
+    niah_prompt_dict,
+    nouns_for_language,
+    sentence_ending,
+    synthetic_book_sentences,
+    translate_noun,
+)
 import stanza
 import ast
 
@@ -86,9 +94,12 @@ inst_lang = args.inst_lang.lower() if args.xling else lang
      
 is_stanza = True
 
-print(f'stanza directory ------------> {os.environ["STANZA_RESOURCES_DIR"]}')
+stanza_dir = os.environ.get("STANZA_RESOURCES_DIR")
+print(f'stanza directory ------------> {stanza_dir}')
 try: 
-    stanza.download(lang, model_dir=os.environ["STANZA_RESOURCES_DIR"]) 
+    if not stanza_dir:
+        raise RuntimeError("STANZA_RESOURCES_DIR is not set")
+    stanza.download(lang, model_dir=stanza_dir) 
 except Exception as e:
     print(f"Error: {e}") 
     is_stanza = False
@@ -107,17 +118,28 @@ if args.xling:
 
     print(f"[xling] index {skip_xling_indices} of vocab list removed") 
 
-nouns = noun_df[args.lang].dropna().tolist() if args.lang in noun_df.columns else print(f"noun_list doesn't have {args.lang}")
-words = [noun.strip() for noun in nouns]
+words = nouns_for_language(args.lang, noun_df)
 
 
 # Positions
 DEPTHS = list(np.round(np.linspace(0, 100, num=40, endpoint=True)).astype(int))
 
 # Define template 
-template_dict = json.load(open(os.path.join(curr_folder, data_folder, f"prompt/{inst_lang}/niah.txt"), "r", encoding="utf-8"))
+template_path = os.path.join(curr_folder, data_folder, f"prompt/{inst_lang}/niah.txt")
+if os.path.exists(template_path):
+    template_dict = json.load(open(template_path, "r", encoding="utf-8"))
+elif is_oellm_language(inst_lang):
+    template_dict = niah_prompt_dict(inst_lang)
+else:
+    raise FileNotFoundError(f"No NIAH prompt for instruction language code: {inst_lang}")
 task_template = template_dict['task']
-context_dict = json.load(open(os.path.join(curr_folder, data_folder, f"prompt//{lang}/niah.txt"), "r", encoding="utf-8"))
+context_path = os.path.join(curr_folder, data_folder, f"prompt/{lang}/niah.txt")
+if os.path.exists(context_path):
+    context_dict = json.load(open(context_path, "r", encoding="utf-8"))
+elif is_oellm_language(lang):
+    context_dict = niah_prompt_dict(lang)
+else:
+    raise FileNotFoundError(f"No NIAH prompt for context language code: {lang}")
 needle = context_dict[f"needle_{args.type_needle_v}"]
 if args.num_needle_q == 1:
     query_type = 'single'
@@ -143,24 +165,29 @@ if args.type_haystack == 'essay':
 elif args.type_haystack == 'book':
     book_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), data_folder, f"books/{args.lang}")
     book =''
-    for book_name in os.listdir(book_path): 
-        if book_name.endswith(".txt"):
-            content = open(os.path.join(book_path, book_name), 'r', encoding="utf-8").read()
-            if lang == 'en':
-                fixed_text =content
-                book += fixed_text
-            else:
-                fixed_text =content
-                book += fixed_text
-    
-    book = re.sub(r'\s+', " ", book)
-    if is_stanza:
-        multi_tokenizer = stanza.Pipeline(lang=lang, processors='tokenize')
-        tokenized_book = multi_tokenizer(book)
-        haystack = [sentence.text.strip() for sentence in tokenized_book.sentences]
+    if os.path.exists(book_path):
+        for book_name in os.listdir(book_path): 
+            if book_name.endswith(".txt"):
+                content = open(os.path.join(book_path, book_name), 'r', encoding="utf-8").read()
+                if lang == 'en':
+                    fixed_text =content
+                    book += fixed_text
+                else:
+                    fixed_text =content
+                    book += fixed_text
+        
+        book = re.sub(r'\s+', " ", book)
+        if is_stanza:
+            multi_tokenizer = stanza.Pipeline(lang=lang, processors='tokenize')
+            tokenized_book = multi_tokenizer(book)
+            haystack = [sentence.text.strip() for sentence in tokenized_book.sentences]
+        else:
+            tokenized_book = re.split(r'(?<=[?.!])\s+', book.strip())
+            haystack = [sentence.strip() for sentence in tokenized_book]
+    elif is_oellm_language(lang):
+        haystack = synthetic_book_sentences(lang)
     else:
-        tokenized_book = re.split(r'(?<=[?.!])\s+', book.strip())
-        haystack = [sentence.strip() for sentence in tokenized_book]
+        raise FileNotFoundError(f"No book haystack for language code: {lang}")
     
     print(f"len of haystack is {len(haystack)}")
 
@@ -208,16 +235,7 @@ def add_period(sentence: str, lang: str) -> str:
     """
     sentence = sentence.rstrip()  # Remove trailing spaces
 
-    if lang in ["zh", "ja"]:  # Full-width period for Chinese and Japanese
-        return sentence + "。"
-    elif lang in ["fa"]:  # Arabic-style period for Persian
-        return sentence + "۔"
-    elif lang in [
-        "en", "ko", "pl", "vi", "ta", "hu", "fr", "no", "uk", "ru", "de", "es", "sv", "fi", "cs", "sr", "pt", "it", "sw", "nl", "st", "hi", "da"
-    ]:
-        return sentence + "."
-    else:
-        raise ValueError(f"Unsupported language code: {lang}")
+    return sentence + sentence_ending(lang)
 
 def find_optimal_sentences_multi_targets(sentences, target, tokenize_func=None):
     sentence_tokens = [len(tokenize_func.text_to_tokens(sent)) for sent in sentences]
@@ -322,8 +340,7 @@ def generate_input_output(num_haystack, index=None):
 
     if args.xling:
         for idx, query in enumerate(queries):
-            translated_noun = noun_df[noun_df[lang].str.strip() == query][args.inst_lang]
-            queries[idx] = translated_noun.values[0].strip()
+            queries[idx] = translate_noun(query, lang, args.inst_lang, noun_df)
     if args.num_needle_q == 2:
         input_text = template.format(
             context=context,

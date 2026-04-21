@@ -40,6 +40,7 @@ import wonderwords
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")) 
 from tokenizer import select_tokenizer
+from oellm_support import cwe_prompt, is_oellm_language, synthetic_pos_words
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--save_dir", type=Path, required=True, help='dataset folder to save dataset')
@@ -79,10 +80,29 @@ data_folder = args.data_dir
 lang = args.lang.lower()
 
 language_codes = {
+    "bg": "Bulgarian",
+    "hr": "Croatian",
     "zh": "Chinese",
     "fr": "French",
+    "et": "Estonian",
+    "el": "Greek",
+    "ga": "Irish",
+    "lv": "Latvian",
+    "lt": "Lithuanian",
+    "mt": "Maltese",
     "ja": "Japanese",
     "pt": "Portuguese",
+    "ro": "Romanian",
+    "sk": "Slovak",
+    "sl": "Slovenian",
+    "sq": "Albanian",
+    "eu": "Basque",
+    "bs": "Bosnian",
+    "ca": "Catalan",
+    "gl": "Galician",
+    "is": "Icelandic",
+    "lb": "Luxembourgish",
+    "mk": "Macedonian",
     "sw": "Swahili",
     "cs": "Czech",
     "de": "German",
@@ -102,6 +122,8 @@ language_codes = {
     "fi": "Finnish",
     "it": "Italian",
     "pl": "Polish",
+    "tr": "Turkish",
+    "cy": "Welsh",
     "es": "Spanish",
     "vi": "Vietnamese"
 }
@@ -109,7 +131,13 @@ language_codes = {
 # Load Tokenizer
 TOKENIZER = select_tokenizer(args.tokenizer_type, args.tokenizer_path)
 
-template = open(os.path.join(curr_folder, data_folder, f"prompt/{lang}/cwe.txt"), "r", encoding="utf-8").read()
+prompt_path = os.path.join(curr_folder, data_folder, f"prompt/{lang}/cwe.txt")
+if os.path.exists(prompt_path):
+    template = open(prompt_path, "r", encoding="utf-8").read()
+elif is_oellm_language(lang):
+    template = cwe_prompt(lang)
+else:
+    raise FileNotFoundError(f"No CWE prompt for language code: {lang}")
 
 pos_path = './data/vocab/dictionaries'
 
@@ -120,13 +148,19 @@ if lang == 'en':
     
 else:
     language = language_codes[lang]
-    df = pd.read_csv(os.path.join(pos_path,language, f'{language}.csv'), dtype={"words": str}, header=0)
-    df = df.dropna(subset=["words"])
+    dictionary_path = os.path.join(pos_path, language, f'{language}.csv')
+    if os.path.exists(dictionary_path):
+        df = pd.read_csv(dictionary_path, dtype={"words": str}, header=0)
+        df = df.dropna(subset=["words"])
 
-    df = df[~df["words"].str.contains(r'\d', regex=True)]
-    nouns = list(df[df["pos"] == "noun"]['words'])
-    adjs = list(df[df["pos"] == "adjective"]['words'])
-    verbs = list(df[df["pos"] == "verb"]['words'])
+        df = df[~df["words"].str.contains(r'\d', regex=True)]
+        nouns = list(df[df["pos"] == "noun"]['words'])
+        adjs = list(df[df["pos"] == "adjective"]['words'])
+        verbs = list(df[df["pos"] == "verb"]['words'])
+    elif is_oellm_language(lang):
+        nouns, adjs, verbs = synthetic_pos_words(lang)
+    else:
+        raise FileNotFoundError(f"No POS dictionary for language code: {lang}")
 
 words = nouns + adjs + verbs
 words = sorted(list(set(words)))
