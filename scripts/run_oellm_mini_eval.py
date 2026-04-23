@@ -27,7 +27,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(REPO_ROOT / "OneRuler"))
 
-from oellm_support import OELLM_LANGUAGES, niah_prompt_dict, synthetic_book_sentences
+from oellm_support import OELLM_LANGUAGES, niah_prompt_dict, sentence_ending
 from eval.evaluate import evaluate_jsonl
 
 DEFAULT_MODEL = "qwen2:0.5b"
@@ -37,6 +37,46 @@ CONTEXT_SENTENCES = 20
 NUM_PREDICT = 128
 TIMEOUT = 120
 TASK = "niah_single"
+
+_NOUN_TSV = REPO_ROOT / "OneRuler" / "data" / "vocab" / "100_noun_list_translated.tsv"
+_noun_cache: dict[str, list[str]] = {}
+
+
+def _load_nouns(lang: str) -> list[str]:
+    if lang in _noun_cache:
+        return _noun_cache[lang]
+    if _NOUN_TSV.exists():
+        with _NOUN_TSV.open(encoding="utf-8") as f:
+            headers = f.readline().rstrip("\n").split("\t")
+            if lang in headers:
+                col = headers.index(lang)
+                nouns = [line.split("\t")[col].strip() for line in f if line.strip()]
+                nouns = [n for n in nouns if n]
+                if nouns:
+                    _noun_cache[lang] = nouns
+                    return nouns
+    # fallback: load from dictionary CSV
+    lang_name = OELLM_LANGUAGES.get(lang, lang).capitalize()
+    csv_path = REPO_ROOT / "OneRuler" / "data" / "vocab" / "dictionaries" / lang_name / f"{lang_name}.csv"
+    if csv_path.exists():
+        import csv as _csv
+        with csv_path.open(encoding="utf-8") as f:
+            reader = _csv.DictReader(f)
+            nouns = [row["words"].strip() for row in reader if row.get("pos") == "noun" and row.get("words", "").strip()]
+        if nouns:
+            _noun_cache[lang] = nouns
+            return nouns
+    raise RuntimeError(f"No real vocabulary found for language: {lang}")
+
+
+def _real_sentences(lang: str, count: int) -> list[str]:
+    words = _load_nouns(lang)
+    ending = sentence_ending(lang)
+    sentences = []
+    for i in range(count):
+        window = [words[(i + j) % len(words)] for j in range(8)]
+        sentences.append(" ".join(window).capitalize() + ending)
+    return sentences
 
 
 def load_prompt(lang: str) -> dict[str, str]:
@@ -52,7 +92,7 @@ def build_example(lang: str, lang_idx: int, q_idx: int) -> dict[str, object]:
     key = f"oellm{lang}{q_idx:02d}"
     value = str(8000000 + unique_idx)
 
-    sentences = synthetic_book_sentences(lang, CONTEXT_SENTENCES + 10)
+    sentences = _real_sentences(lang, CONTEXT_SENTENCES + 10)
     needle = template["needle_numbers"].format(key=key, value=value).strip()
     insert_at = max(1, (len(sentences) * (q_idx + 1)) // (QUESTIONS_PER_LANG + 1))
     parts = sentences[:insert_at] + [needle] + sentences[insert_at:CONTEXT_SENTENCES]
