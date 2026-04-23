@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""OELLM evaluation: NIAH across all 38 languages via local Ollama.
+"""OELLM evaluation: NIAH across all 38 languages.
 
 Harder than a naive setup in three ways:
   1. Real book text is used as haystack for the 26 languages that have one
@@ -10,10 +10,16 @@ Harder than a naive setup in three ways:
   3. Needle depth is varied uniformly across questions (10%, 30%, 50%, 70%, 90%)
      rather than always placed at the midpoint.
 
+Backends:
+  ollama      — local Ollama server (default)
+  huggingface — load model directly via transformers (GPU required for large models)
+  oracle      — perfect answers, used for smoke-testing the pipeline
+
 Usage:
-    python scripts/run_oellm_mini_eval.py                            # qwen2:0.5b, 2q
+    python scripts/run_oellm_mini_eval.py                            # qwen2:0.5b via Ollama
     python scripts/run_oellm_mini_eval.py --model gemma4 --questions 5 --num-predict 1024
     python scripts/run_oellm_mini_eval.py --backend oracle --questions 5
+    python scripts/run_oellm_mini_eval.py --backend huggingface --model openeurollm/datamix-2b-80-20 --context-words 500
     python scripts/run_oellm_mini_eval.py --languages bg tr cy --questions 3
 """
 
@@ -210,6 +216,59 @@ def call_ollama(model: str, prompt: str, url: str, num_predict: int = NUM_PREDIC
         return json.loads(resp.read().decode("utf-8")).get("response", "")
 
 
+# Lazily loaded HuggingFace model/tokenizer (shared across all calls in a run)
+_hf_model = None
+_hf_tokenizer = None
+_hf_model_name: str | None = None
+
+
+def _load_hf_model(model_name: str):
+    global _hf_model, _hf_tokenizer, _hf_model_name
+    if _hf_model_name == model_name:
+        return
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    print(f"  [HF] Loading {model_name} ...", flush=True)
+    _hf_tokenizer = AutoTokenizer.from_pretrained(model_name)
+    _hf_model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        dtype=torch.float16,
+        device_map="auto",
+    )
+    _hf_model.eval()
+    _hf_model_name = model_name
+    print(f"  [HF] Loaded on {next(_hf_model.parameters()).device}", flush=True)
+
+
+def call_huggingface(model_name: str, prompt: str, num_predict: int = NUM_PREDICT) -> str:
+    import torch
+
+    _load_hf_model(model_name)
+    tok = _hf_tokenizer
+    model = _hf_model
+
+    max_model_len = getattr(model.config, "max_position_embeddings", 2048)
+    max_new = min(num_predict, 128)
+    max_input = max_model_len - max_new
+
+    inputs = tok(prompt, return_tensors="pt", truncation=True, max_length=max_input)
+    inputs = {k: v.to(model.device) for k, v in inputs.items()}
+    input_len = inputs["input_ids"].shape[1]
+
+    with torch.no_grad():
+        out = model.generate(
+            **inputs,
+            max_new_tokens=max_new,
+            do_sample=False,
+            temperature=1.0,
+            pad_token_id=tok.eos_token_id,
+        )
+
+    new_tokens = out[0][input_len:]
+    return tok.decode(new_tokens, skip_special_tokens=True)
+
+
 def clean_model_name(model: str) -> str:
     return re.sub(r"[^A-Za-z0-9_.-]+", "-", model).strip("-")
 
@@ -256,6 +315,16 @@ def run(args: argparse.Namespace) -> int:
             if args.backend == "oracle":
                 response_text = f"<Answer>{example['outputs'][0]}</Answer>"
                 error = ""
+            elif args.backend == "huggingface":
+                try:
+                    response_text = call_huggingface(
+                        args.model, str(example["input"]), args.num_predict
+                    )
+                    error = ""
+                except Exception as exc:
+                    response_text = ""
+                    error = f"{type(exc).__name__}: {exc}"
+                    lang_errors += 1
             else:
                 try:
                     response_text = call_ollama(
@@ -350,7 +419,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ollama-url", default=DEFAULT_OLLAMA_URL)
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "eval_results" / "mini_eval")
     parser.add_argument("--languages", nargs="+", help="Subset of language codes")
-    parser.add_argument("--backend", choices=["ollama", "oracle"], default="ollama")
+    parser.add_argument("--backend", choices=["ollama", "oracle", "huggingface"], default="ollama")
     parser.add_argument("--num-predict", type=int, default=NUM_PREDICT,
                         help="Max tokens to generate per response")
     parser.add_argument("--questions", type=int, default=DEFAULT_QUESTIONS,
