@@ -22,12 +22,16 @@ MODELS = {
     "qwen2-0.5b":       ("Qwen2 0.5B (easy)",          MINI_EVAL / "qwen2-0.5b" / "summary.csv"),
     "qwen2-1.5b":       ("Qwen2 1.5B (easy)",          MINI_EVAL / "qwen2-1.5b" / "summary.csv"),
     "gemma4-easy":      ("Gemma 4 E4B (easy)",         MINI_EVAL / "gemma4" / "summary.csv"),
-    "gemma4-harder":    ("Gemma 4 E4B (harder eval)",  FULL_EVAL / "gemma4" / "summary.csv"),
+    "gemma3-4b":        ("Gemma 3 4B (harder)",        FULL_EVAL / "gemma3-4b" / "summary.csv"),
+    "gemma4-e2b":       ("Gemma 4 E2B (harder)",       FULL_EVAL / "gemma4-e2b" / "summary.csv"),
+    "gemma4-harder":    ("Gemma 4 E4B (harder)",       FULL_EVAL / "gemma4" / "summary.csv"),
 }
 MODEL_COLORS = {
     "qwen2-0.5b":    "#7EC8E3",
     "qwen2-1.5b":    "#0E86D4",
     "gemma4-easy":   "#FF6B6B",
+    "gemma3-4b":     "#A8D8A8",
+    "gemma4-e2b":    "#FFD700",
     "gemma4-harder": "#FF9900",
 }
 

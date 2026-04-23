@@ -56,17 +56,20 @@ Results (NIAH single, 2 questions per language):
 |-------|-----------|-------------|---------|-------|
 | `qwen2:0.5b` | easy | 21% | ~20s | — |
 | `qwen2:1.5b` | easy | 20% | ~50s | — |
-| `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | easy | **82%** | ~520s | token budget at 512 |
-| `gemma4` | **harder** | **91%** | ~726s | real book haystacks + distractors |
+| `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | easy | 82% | ~520s | token budget at 512 |
+| `gemma3:4b` ([google/gemma-3-4b](https://huggingface.co/google/gemma-3-4b-it), Q4) | harder | 64% | ~141s | — |
+| `gemma4:e2b` ([google/gemma-4-E2B](https://huggingface.co/google/gemma-4-E2B), Q4) | harder | **86%** | ~464s | — |
+| `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | harder | **91%** | ~726s | — |
 
 Full per-language results are in `eval_results/`.
 
 ### Key findings
 
-- **91% on the harder benchmark** — gemma4 handles the distracting-number context well for most languages.
-- **Norwegian and Serbian score 0%** on the harder eval: the model correctly retrieves the needle but also reports a distractor number, giving a multi-number answer when only one is expected. This is the benchmark working correctly — the distractors are effective.
-- **Irish, Basque, Welsh score 50%** — one empty response per language (token budget exhausted during reasoning), one correct. No wrong answers.
-- **Conclusion:** gemma4 has adequate coverage for all 38 OELLM languages; failures are generation-length or distractor-confusion issues, not missing training data.
+- **Gemma 4 E4B scores 91%** on the harder benchmark — the strongest result across all models tested.
+- **Gemma 4 E2B scores 86%** — just 5 points below the E4B despite half the active parameters, completing the run in 64% of the time (~7.7 min vs ~12 min).
+- **Gemma 3 4B scores 64%** — a dense 4B model, noticeably weaker than either MoE Gemma 4 variant on multilingual retrieval.
+- **Norwegian and Serbian score 0%** on the E4B harder eval: the model retrieves the needle correctly but also reports a distractor number (multi-number answer when one is expected). The distractors are working.
+- **Conclusion:** gemma4 MoE models have strong coverage for all 38 OELLM languages; the E2B is a compelling smaller alternative at 86% accuracy.
 
 ## 🗃️ Data Generation
 
