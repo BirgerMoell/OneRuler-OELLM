@@ -31,32 +31,42 @@ These resources are meant to make experiments runnable and reproducible. They sh
 
 ## Mini Eval — NIAH baseline across all 38 languages
 
-![OELLM Mini Eval Results](eval_results/mini_eval/oellm_eval_results.png)
+![OELLM Eval Results](eval_results/mini_eval/oellm_eval_results.png)
 
-A lightweight evaluation script (`scripts/run_oellm_mini_eval.py`) runs 2 NIAH questions per language via a local Ollama model and writes results to `eval_results/mini_eval/`. Results use real translated nouns as haystack distractors.
+The evaluation script (`scripts/run_oellm_mini_eval.py`) runs NIAH questions per language via a local Ollama model.  Two difficulty levels are shown in the figure above:
+
+- **Easy** (`eval_results/mini_eval/`) — short noun-only haystack, needle is the only number present
+- **Harder** (`eval_results/full_eval/`) — ~2000-word real book text (or synthetic sentences), ~10 distracting 7-digit numbers, needle depth varied across questions (10 %–90 %)
 
 To reproduce:
 ```bash
 # install Ollama: https://ollama.com
-ollama pull qwen2:1.5b
-python scripts/run_oellm_mini_eval.py --model qwen2:1.5b
+ollama pull gemma4
+
+# harder eval (recommended)
+python scripts/run_oellm_mini_eval.py --model gemma4 --num-predict 1024
+
+# quick smoke-test without a model
+python scripts/run_oellm_mini_eval.py --backend oracle --questions 2
 ```
 
-Baseline results (NIAH single, 2 questions per language, real-word haystack):
+Results (NIAH single, 2 questions per language):
 
-| Model | Avg accuracy | Languages | Runtime | Notes |
-|-------|-------------|-----------|---------|-------|
-| `qwen2:0.5b` | 21% | 38/38 | ~20s | — |
-| `qwen2:1.5b` | 20% | 38/38 | ~50s | — |
-| `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | **82%** | 38/38 | ~520s | use `--num-predict 1024` |
+| Model | Benchmark | Avg accuracy | Runtime | Notes |
+|-------|-----------|-------------|---------|-------|
+| `qwen2:0.5b` | easy | 21% | ~20s | — |
+| `qwen2:1.5b` | easy | 20% | ~50s | — |
+| `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | easy | **82%** | ~520s | token budget at 512 |
+| `gemma4` | **harder** | **91%** | ~726s | real book haystacks + distractors |
 
-Full per-language results are in `eval_results/mini_eval/`.
+Full per-language results are in `eval_results/`.
 
-### Finding: 50% scores are a token-budget artifact, not missing training data
+### Key findings
 
-Every language that scored below 100% with `gemma4` had exactly one empty response and one correct response — the model never produced a *wrong* answer, only a *missing* one. Gemma 4 E4B is a thinking model; at `--num-predict 512` it occasionally exhausts its token budget before writing the answer. Hungarian scored 0% because both of its prompts exceeded the budget; running the same prompts at `--num-predict 1024` yields correct answers for both.
-
-**Conclusion:** gemma4 has adequate coverage for all 38 OELLM languages. The apparent gaps are purely a generation-length issue, not gaps in training data.
+- **91% on the harder benchmark** — gemma4 handles the distracting-number context well for most languages.
+- **Norwegian and Serbian score 0%** on the harder eval: the model correctly retrieves the needle but also reports a distractor number, giving a multi-number answer when only one is expected. This is the benchmark working correctly — the distractors are effective.
+- **Irish, Basque, Welsh score 50%** — one empty response per language (token budget exhausted during reasoning), one correct. No wrong answers.
+- **Conclusion:** gemma4 has adequate coverage for all 38 OELLM languages; failures are generation-length or distractor-confusion issues, not missing training data.
 
 ## 🗃️ Data Generation
 

@@ -14,17 +14,21 @@ import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MINI_EVAL = REPO_ROOT / "eval_results" / "mini_eval"
+FULL_EVAL = REPO_ROOT / "eval_results" / "full_eval"
 OUT_PATH = MINI_EVAL / "oellm_eval_results.png"
 
+# model_key -> (label, csv_path)
 MODELS = {
-    "qwen2-0.5b": "Qwen2 0.5B",
-    "qwen2-1.5b": "Qwen2 1.5B",
-    "gemma4":     "Gemma 4 E4B",
+    "qwen2-0.5b":       ("Qwen2 0.5B (easy)",          MINI_EVAL / "qwen2-0.5b" / "summary.csv"),
+    "qwen2-1.5b":       ("Qwen2 1.5B (easy)",          MINI_EVAL / "qwen2-1.5b" / "summary.csv"),
+    "gemma4-easy":      ("Gemma 4 E4B (easy)",         MINI_EVAL / "gemma4" / "summary.csv"),
+    "gemma4-harder":    ("Gemma 4 E4B (harder eval)",  FULL_EVAL / "gemma4" / "summary.csv"),
 }
 MODEL_COLORS = {
-    "qwen2-0.5b": "#7EC8E3",
-    "qwen2-1.5b": "#0E86D4",
-    "gemma4":     "#FF6B6B",
+    "qwen2-0.5b":    "#7EC8E3",
+    "qwen2-1.5b":    "#0E86D4",
+    "gemma4-easy":   "#FF6B6B",
+    "gemma4-harder": "#FF9900",
 }
 
 EU_OFFICIAL = {"bg","hr","cs","da","nl","et","fi","fr","de","el","hu","ga",
@@ -42,36 +46,36 @@ LANG_NAMES = {
 }
 
 
-def load_scores(model_dir: str) -> dict[str, float]:
-    path = MINI_EVAL / model_dir / "summary.csv"
+def load_scores(csv_path: Path) -> dict[str, float]:
     scores = {}
-    with path.open(encoding="utf-8") as f:
+    with csv_path.open(encoding="utf-8") as f:
         for row in csv.DictReader(f):
             scores[row["lang"]] = float(row["accuracy"])
     return scores
 
 
 def main() -> None:
-    all_scores = {k: load_scores(k) for k in MODELS}
+    all_scores = {k: load_scores(v[1]) for k, v in MODELS.items() if v[1].exists()}
 
     # Sort: extra langs at bottom (low y), EU official at top (high y)
     # Within each group sort ascending so highest scorers end up at the very top
-    gemma4 = all_scores["gemma4"]
+    gemma4 = all_scores.get("gemma4-harder", all_scores.get("gemma4-easy", {}))
     eu_langs = sorted(EU_OFFICIAL, key=lambda l: gemma4.get(l, 0))
     extra_langs = sorted(set(LANG_NAMES) - EU_OFFICIAL, key=lambda l: gemma4.get(l, 0))
     langs = extra_langs + eu_langs  # EU official gets higher y_positions → top of chart
 
     n_langs = len(langs)
-    n_models = len(MODELS)
-    bar_h = 0.22
+    active_models = [(k, v) for k, v in MODELS.items() if k in all_scores]
+    n_models = len(active_models)
+    bar_h = 0.20
     group_gap = 0.18
     y_positions = np.arange(n_langs) * (n_models * bar_h + group_gap)
 
-    fig, ax = plt.subplots(figsize=(13, 15))
+    fig, ax = plt.subplots(figsize=(13, 16))
     fig.patch.set_facecolor("#0D1117")
     ax.set_facecolor("#0D1117")
 
-    for i, (model_key, model_label) in enumerate(MODELS.items()):
+    for i, (model_key, (model_label, _)) in enumerate(active_models):
         scores = all_scores[model_key]
         color = MODEL_COLORS[model_key]
         offset = (i - (n_models - 1) / 2) * bar_h
@@ -132,22 +136,18 @@ def main() -> None:
         spine.set_visible(False)
 
     # Title
-    ax.set_title("OELLM Mini Eval — NIAH Accuracy across 38 Languages",
+    ax.set_title("OELLM Eval — NIAH Accuracy across 38 Languages",
                  fontsize=13.5, fontweight="bold", color="white", pad=14)
-    ax.set_xlabel("Accuracy  (2 questions per language, real-word haystack)",
-                  fontsize=9.5, color="#707070", labelpad=10)
+    ax.set_xlabel("Accuracy  (2 questions per language · easy=noun-only context · harder=real book + distractors)",
+                  fontsize=8.5, color="#707070", labelpad=10)
 
     # Legend with averages
-    legend_labels = {}
-    for model_key, model_label in MODELS.items():
+    legend_patches = []
+    for model_key, (model_label, _) in active_models:
         scores = all_scores[model_key]
         avg = sum(scores.get(l, 0) for l in langs) / len(langs)
-        legend_labels[model_key] = f"{model_label}   (avg {avg:.0%})"
-
-    legend_patches = [
-        mpatches.Patch(color=MODEL_COLORS[k], label=legend_labels[k], alpha=0.9)
-        for k in MODELS
-    ]
+        label = f"{model_label}   (avg {avg:.0%})"
+        legend_patches.append(mpatches.Patch(color=MODEL_COLORS[model_key], label=label, alpha=0.9))
     leg = ax.legend(handles=legend_patches, loc="lower right",
                     framealpha=0.2, labelcolor="white", fontsize=9.5,
                     edgecolor="#333", facecolor="#1A1A2A")
@@ -155,7 +155,7 @@ def main() -> None:
 
     # Footer note
     ax.text(0.0, 1.005,
-            "★ gemma4 Hungarian: 0% at --num-predict 512, passes at 1024 (token budget issue)",
+            "★ harder eval: 2000-word context, distracting 7-digit numbers, varied needle depth 10–90%",
             transform=ax.transAxes, fontsize=7, color="#606060", va="bottom")
 
     plt.tight_layout(rect=[0, 0, 0.97, 1])
