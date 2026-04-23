@@ -147,11 +147,22 @@ def run(args: argparse.Namespace) -> int:
 
     response_key = f"response-{clean_model_name(model_label)}"
 
+    total_questions = len(languages) * args.questions
+    questions_done = 0
+
     for lang_idx, lang in enumerate(languages):
         if lang not in OELLM_LANGUAGES:
             raise ValueError(f"Unknown OELLM language code: {lang}")
         lang_name = OELLM_LANGUAGES[lang]
-        print(f"[{lang_idx + 1:02d}/{len(languages)}] {lang} ({lang_name})")
+        elapsed_so_far = time.time() - started
+        pct = questions_done / total_questions * 100 if total_questions else 0
+        eta_str = ""
+        if questions_done > 0:
+            rate = elapsed_so_far / questions_done
+            remaining = (total_questions - questions_done) * rate
+            eta_str = f"  ETA {remaining/60:.1f}m"
+        print(f"[{lang_idx + 1:02d}/{len(languages)}] {lang} ({lang_name})"
+              f"  {pct:.0f}% done{eta_str}", flush=True)
 
         jsonl_path = output_root / lang / TASK / "results.jsonl"
         jsonl_path.parent.mkdir(parents=True, exist_ok=True)
@@ -161,6 +172,7 @@ def run(args: argparse.Namespace) -> int:
         lang_errors = 0
 
         for q_idx in range(args.questions):
+            q_started = time.time()
             example = build_example(lang, lang_idx, q_idx, args.questions)
 
             if args.backend == "oracle":
@@ -177,6 +189,13 @@ def run(args: argparse.Namespace) -> int:
                     status = "error"
                     error = f"{type(exc).__name__}: {exc}"
                     lang_errors += 1
+
+            correct = response_text and example["outputs"][0] in response_text
+            q_elapsed = time.time() - q_started
+            questions_done += 1
+            overall_pct = questions_done / total_questions * 100
+            print(f"  q{q_idx + 1:02d}/{args.questions}  {'✓' if correct else '✗'}"
+                  f"  {q_elapsed:.1f}s  [{overall_pct:.0f}% overall]", flush=True)
 
             record = {**example, response_key: response_text}
             if error:
@@ -206,7 +225,7 @@ def run(args: argparse.Namespace) -> int:
             }
         )
         acc_str = f"{avg_acc:.0%}"
-        print(f"        accuracy={acc_str}  errors={lang_errors}")
+        print(f"  → accuracy={acc_str}  errors={lang_errors}", flush=True)
 
     elapsed = time.time() - started
     ok = sum(r["status"] == "ok" for r in summary_rows)
