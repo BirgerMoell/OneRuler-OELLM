@@ -1,0 +1,8 @@
+Më poshtë është një listë e numëruar fjalësh. Ndër këto fjalë, disa shfaqen më shpesh se të tjerat. Mbani mend ato që shfaqen më shpesh.
+
+<Listë> {context} </Listë>
+
+<Pyetje> Cilat janë 10 fjalët më të shpeshta në listën e mëposhtme? </Pyetje>
+
+Ju lutem jepni përgjigjen tuaj në formatin e mëposhtëm:
+<Përgjigje> Listoni fjalët këtu </Përgjigje>

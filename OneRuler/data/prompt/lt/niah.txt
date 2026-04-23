@@ -1,0 +1,16 @@
+{
+"task": "Prašome perskaityti ir įsiminti žemiau pateiktą tekstą. Vėliau jūsų apie tai paklausiu.\n\n<Tekstas>\n{context}\n</Tekstas>\n\n",
+"needle_words": "Ypatingasis magiškas žodis raktui \"{key}\" yra: {value} ",
+"needle_numbers": "Ypatingasis magiškas skaičius raktui \"{key}\" yra: {value} ",
+"question_single_numbers": "<Klausimas> Kokie ypatingieji magiški skaičiai, susiję su \"{query1}\", paminėti pateiktame tekste?",
+"question_single_words": "<Klausimas> Kokie ypatingieji magiški žodžiai, susiję su \"{query1}\", paminėti pateiktame tekste?",
+"question_multi_numbers": "<Klausimas> Kokie ypatingieji magiški skaičiai, susiję su \"{query1}\" ir \"{query2}\", paminėti pateiktame tekste?",
+"question_multi_words": "<Klausimas> Kokie ypatingieji magiški žodžiai, susiję su \"{query1}\" ir \"{query2}\", paminėti pateiktame tekste?",
+"please_list": "Prašome išvardinti visus tinkamus.",
+"if_no_numbers": "Jei tokių skaičių nėra, atsakykite \"nėra\".</Klausimas>\n\n\n",
+"if_no_words": "Jei tokių žodžių nėra, atsakykite \"nėra\".</Klausimas>\n\n\n",
+"answer_prefix": "Prašome pateikti savo atsakymą šiuo formatu:\n",
+"answer_words": "<Atsakymas> Išvardinkite visus žodžius čia </Atsakymas>",
+"answer_numbers": "<Atsakymas> Išvardinkite visus skaičius čia </Atsakymas>",
+"none": "nėra"
+}

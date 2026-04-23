@@ -1,0 +1,8 @@
+Hér að neðan er númeraður listi yfir orð. Meðal þessara orða koma sum oftar fram en önnur. Mundu þau sem koma fram oftast.
+
+<Listi> {context} </Listi>
+
+<Spurning> Hverjar eru 10 algengastu orðin á listanum hér að ofan? </Spurning>
+
+Vinsamlegast gefðu svar þitt á eftirfarandi sniði:
+<Svar> Skráðu orðin hér </Svar>

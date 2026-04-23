@@ -1,0 +1,8 @@
+Hawn taħt hemm lista numerata ta' kelmiet. F'dawn il-kelmiet, xi wħud jidhru aktar ta' spiss minn oħrajn. Ftakar f'dawk li jidhru l-aktar ta' spiss.
+
+<Lista> {context} </Lista>
+
+<Mistoqsija> X'inhuma l-10 kelmiet l-aktar komuni fil-lista ta' hawn fuq? </Mistoqsija>
+
+Jekk jogħġbok agħti t-tweġiba tiegħek fil-format li ġej:
+<Tweġiba> Elenca l-kelmiet hawn </Tweġiba>

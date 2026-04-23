@@ -1,0 +1,16 @@
+{
+"task": "Molim te pročitaj i zapamti tekst ispod. Kasnije ću te pitati o njemu.\n\n<Tekst>\n{context}\n</Tekst>\n\n",
+"needle_words": "Posebna čarobna riječ za \"{key}\" je: {value} ",
+"needle_numbers": "Poseban čaroban broj za \"{key}\" je: {value} ",
+"question_single_numbers": "<Pitanje> Koji posebni čarobni brojevi povezani s \"{query1}\" su navedeni u priloženom tekstu?",
+"question_single_words": "<Pitanje> Koje posebne čarobne riječi povezane s \"{query1}\" su navedene u priloženom tekstu?",
+"question_multi_numbers": "<Pitanje> Koji posebni čarobni brojevi povezani s \"{query1}\" i \"{query2}\" su navedeni u priloženom tekstu?",
+"question_multi_words": "<Pitanje> Koje posebne čarobne riječi povezane s \"{query1}\" i \"{query2}\" su navedene u priloženom tekstu?",
+"please_list": "Molim navedite sve što se odnosi.",
+"if_no_numbers": "Ako takvi brojevi ne postoje, molim odgovorite \"nema\".</Pitanje>\n\n\n",
+"if_no_words": "Ako takve riječi ne postoje, molim odgovorite \"nema\".</Pitanje>\n\n\n",
+"answer_prefix": "Molim navedite odgovor u sljedećem formatu:\n",
+"answer_words": "<Odgovor> Navedite sve riječi ovdje </Odgovor>",
+"answer_numbers": "<Odgovor> Navedite sve brojeve ovdje </Odgovor>",
+"none": "nema"
+}

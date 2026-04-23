@@ -1,0 +1,16 @@
+{
+"task": "Darllenwch a chofiwch y testun isod os gwelwch yn dda. Byddaf yn gofyn i chi amdano yn ddiweddarach.\n\n<Testun>\n{context}\n</Testun>\n\n",
+"needle_words": "Y gair hud arbennig ar gyfer \"{key}\" yw: {value} ",
+"needle_numbers": "Y rhif hud arbennig ar gyfer \"{key}\" yw: {value} ",
+"question_single_numbers": "<Cwestiwn> Pa rifau hud arbennig sy'n gysylltiedig â \"{query1}\" sy'n cael eu crybwyll yn y testun a roddir?",
+"question_single_words": "<Cwestiwn> Pa eiriau hud arbennig sy'n gysylltiedig â \"{query1}\" sy'n cael eu crybwyll yn y testun a roddir?",
+"question_multi_numbers": "<Cwestiwn> Pa rifau hud arbennig sy'n gysylltiedig â \"{query1}\" a \"{query2}\" sy'n cael eu crybwyll yn y testun a roddir?",
+"question_multi_words": "<Cwestiwn> Pa eiriau hud arbennig sy'n gysylltiedig â \"{query1}\" a \"{query2}\" sy'n cael eu crybwyll yn y testun a roddir?",
+"please_list": "Rhowch restr o bopeth sy'n berthnasol os gwelwch yn dda.",
+"if_no_numbers": "Os nad oes rhifau o'r fath, atebwch \"dim\" os gwelwch yn dda.</Cwestiwn>\n\n\n",
+"if_no_words": "Os nad oes geiriau o'r fath, atebwch \"dim\" os gwelwch yn dda.</Cwestiwn>\n\n\n",
+"answer_prefix": "Darparwch eich ateb yn y fformat canlynol os gwelwch yn dda:\n",
+"answer_words": "<Ateb> Rhestrwch yr holl eiriau yma </Ateb>",
+"answer_numbers": "<Ateb> Rhestrwch yr holl rifau yma </Ateb>",
+"none": "dim"
+}

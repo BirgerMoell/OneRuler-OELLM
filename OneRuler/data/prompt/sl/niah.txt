@@ -1,0 +1,16 @@
+{
+"task": "Prosim, preberite in si zapomnite spodnje besedilo. Kasneje vas bom vprašal o njem.\n\n<Besedilo>\n{context}\n</Besedilo>\n\n",
+"needle_words": "Posebna čarobna beseda za \"{key}\" je: {value} ",
+"needle_numbers": "Posebna čarobna številka za \"{key}\" je: {value} ",
+"question_single_numbers": "<Vprašanje> Katere posebne čarobne številke, povezane z \"{query1}\", so omenjene v predloženem besedilu?",
+"question_single_words": "<Vprašanje> Katere posebne čarobne besede, povezane z \"{query1}\", so omenjene v predloženem besedilu?",
+"question_multi_numbers": "<Vprašanje> Katere posebne čarobne številke, povezane z \"{query1}\" in \"{query2}\", so omenjene v predloženem besedilu?",
+"question_multi_words": "<Vprašanje> Katere posebne čarobne besede, povezane z \"{query1}\" in \"{query2}\", so omenjene v predloženem besedilu?",
+"please_list": "Prosim, navedite vse, ki se nanašajo.",
+"if_no_numbers": "Če takšnih številk ni, prosim odgovorite \"nič\".</Vprašanje>\n\n\n",
+"if_no_words": "Če takšnih besed ni, prosim odgovorite \"nič\".</Vprašanje>\n\n\n",
+"answer_prefix": "Prosim, navedite odgovor v naslednji obliki:\n",
+"answer_words": "<Odgovor> Navedite vse besede tukaj </Odgovor>",
+"answer_numbers": "<Odgovor> Navedite vse številke tukaj </Odgovor>",
+"none": "nič"
+}

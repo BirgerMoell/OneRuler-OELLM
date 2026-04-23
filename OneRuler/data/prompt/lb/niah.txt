@@ -1,0 +1,16 @@
+{
+"task": "Liese w.e.g. den Text hei ënnen a lär en auswendeg. Ech wäert Iech spéider doriwwer froen.\n\n<Text>\n{context}\n</Text>\n\n",
+"needle_words": "D'speziell Zauberwuert fir \"{key}\" ass: {value} ",
+"needle_numbers": "D'speziell Zauberzuel fir \"{key}\" ass: {value} ",
+"question_single_numbers": "<Fro> Wéi speziell Zauberzuelen am Zesummenhang mat \"{query1}\" ginn am uginn Text ernimmt?",
+"question_single_words": "<Fro> Wéi speziell Zauberwierder am Zesummenhang mat \"{query1}\" ginn am uginn Text ernimmt?",
+"question_multi_numbers": "<Fro> Wéi speziell Zauberzuelen am Zesummenhang mat \"{query1}\" an \"{query2}\" ginn am uginn Text ernimmt?",
+"question_multi_words": "<Fro> Wéi speziell Zauberwierder am Zesummenhang mat \"{query1}\" an \"{query2}\" ginn am uginn Text ernimmt?",
+"please_list": "Gitt w.e.g. all déi un, déi zoutreffen.",
+"if_no_numbers": "Wann et keng esou Zuelen gëtt, äntwert w.e.g. mat \"keen\".</Fro>\n\n\n",
+"if_no_words": "Wann et keng esou Wierder gëtt, äntwert w.e.g. mat \"keen\".</Fro>\n\n\n",
+"answer_prefix": "Gitt w.e.g. Är Äntwert am folgenden Format:\n",
+"answer_words": "<Äntwert> Lëscht all Wierder hei </Äntwert>",
+"answer_numbers": "<Äntwert> Lëscht all Zuelen hei </Äntwert>",
+"none": "keen"
+}

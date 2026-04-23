@@ -1,0 +1,8 @@
+Allpool on sõnade nummerdatud loend. Nende sõnade hulgas esinevad mõned sagedamini kui teised. Jätke meelde need, mis esinevad kõige sagedamini.
+
+<Loend> {context} </Loend>
+
+<Küsimus> Millised on 10 kõige sagedasemat sõna ülaltoodud loendis? </Küsimus>
+
+Palun esitage oma vastus järgmises vormingus:
+<Vastus> Loetlege sõnad siin </Vastus>

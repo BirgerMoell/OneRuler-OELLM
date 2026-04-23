@@ -1,0 +1,16 @@
+{
+"task": "Vinsamlegast lestu og mundu textann hér að neðan. Ég mun spyrja þig um hann síðar.\n\n<Texti>\n{context}\n</Texti>\n\n",
+"needle_words": "Sérstakt töfraorð fyrir \"{key}\" er: {value} ",
+"needle_numbers": "Sérstakt töfratal fyrir \"{key}\" er: {value} ",
+"question_single_numbers": "<Spurning> Hvaða sérstök töfratal tengd \"{query1}\" eru nefnd í textanum?",
+"question_single_words": "<Spurning> Hvaða sérstök töfraorð tengd \"{query1}\" eru nefnd í textanum?",
+"question_multi_numbers": "<Spurning> Hvaða sérstök töfratal tengd \"{query1}\" og \"{query2}\" eru nefnd í textanum?",
+"question_multi_words": "<Spurning> Hvaða sérstök töfraorð tengd \"{query1}\" og \"{query2}\" eru nefnd í textanum?",
+"please_list": "Vinsamlegast skráðu öll sem eiga við.",
+"if_no_numbers": "Ef engin slík tala er til, svaraðu \"ekkert\".</Spurning>\n\n\n",
+"if_no_words": "Ef engin slík orð eru til, svaraðu \"ekkert\".</Spurning>\n\n\n",
+"answer_prefix": "Vinsamlegast gefðu svar þitt á eftirfarandi sniði:\n",
+"answer_words": "<Svar> Skráðu öll orð hér </Svar>",
+"answer_numbers": "<Svar> Skráðu öll tölur hér </Svar>",
+"none": "ekkert"
+}

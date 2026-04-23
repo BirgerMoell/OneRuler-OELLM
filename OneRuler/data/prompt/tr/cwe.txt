@@ -1,0 +1,8 @@
+Aşağıda numaralandırılmış bir kelime listesi bulunmaktadır. Bu kelimeler arasında bazıları diğerlerinden daha sık görünmektedir. En sık görünenleri ezberleyin.
+
+<Liste> {context} </Liste>
+
+<Soru> Yukarıdaki listede en sık geçen 10 kelime hangisidir? </Soru>
+
+Lütfen yanıtınızı aşağıdaki formatta verin:
+<Cevap> Kelimeleri buraya listeleyin </Cevap>

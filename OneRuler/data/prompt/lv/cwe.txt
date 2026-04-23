@@ -1,0 +1,8 @@
+Tālāk ir numerēts vārdu saraksts. Šajos vārdos daži parādās biežāk nekā citi. Iegaumējiet tos, kas parādās visbiežāk.
+
+<Saraksts> {context} </Saraksts>
+
+<Jautājums> Kādi ir 10 biežākie vārdi augstāk esošajā sarakstā? </Jautājums>
+
+Lūdzu, sniedziet atbildi šādā formātā:
+<Atbilde> Uzskaitiet vārdus šeit </Atbilde>

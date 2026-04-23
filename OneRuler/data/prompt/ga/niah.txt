@@ -1,0 +1,16 @@
+{
+"task": "Léigh agus meabhraigh an téacs thíos le do thoil. Cuirfidh mé ceist ort faoi níos déanaí.\n\n<Téacs>\n{context}\n</Téacs>\n\n",
+"needle_words": "Is é {value} an focal draíochta speisialta do \"{key}\" ",
+"needle_numbers": "Is é {value} an uimhir dhraíochta speisialta do \"{key}\" ",
+"question_single_numbers": "<Ceist> Cad iad na huimhreacha draíochta speisialta a bhaineann le \"{query1}\" atá luaite sa téacs a soláthraíodh?",
+"question_single_words": "<Ceist> Cad iad na focail draíochta speisialta a bhaineann le \"{query1}\" atá luaite sa téacs a soláthraíodh?",
+"question_multi_numbers": "<Ceist> Cad iad na huimhreacha draíochta speisialta a bhaineann le \"{query1}\" agus \"{query2}\" atá luaite sa téacs a soláthraíodh?",
+"question_multi_words": "<Ceist> Cad iad na focail draíochta speisialta a bhaineann le \"{query1}\" agus \"{query2}\" atá luaite sa téacs a soláthraíodh?",
+"please_list": "Liostaigh gach ceann a bhfuil feidhm acu le do thoil.",
+"if_no_numbers": "Mura bhfuil uimhreacha den sórt sin ann, freagair \"níl\" le do thoil.</Ceist>\n\n\n",
+"if_no_words": "Mura bhfuil focail den sórt sin ann, freagair \"níl\" le do thoil.</Ceist>\n\n\n",
+"answer_prefix": "Cuir d'fhreagra sa bhformáid seo a leanas le do thoil:\n",
+"answer_words": "<Freagra> Liostaigh na focail go léir anseo </Freagra>",
+"answer_numbers": "<Freagra> Liostaigh na huimhreacha go léir anseo </Freagra>",
+"none": "níl"
+}

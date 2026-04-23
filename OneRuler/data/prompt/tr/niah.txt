@@ -1,0 +1,16 @@
+{
+"task": "Lütfen aşağıdaki metni okuyun ve ezberleyin. Daha sonra bunun hakkında sizi sorgulayacağım.\n\n<Metin>\n{context}\n</Metin>\n\n",
+"needle_words": "\"{key}\" için özel büyülü kelime: {value} ",
+"needle_numbers": "\"{key}\" için özel büyülü sayı: {value} ",
+"question_single_numbers": "<Soru> Verilen metinde \"{query1}\" ile ilişkili hangi özel büyülü sayılar belirtilmektedir?",
+"question_single_words": "<Soru> Verilen metinde \"{query1}\" ile ilişkili hangi özel büyülü kelimeler belirtilmektedir?",
+"question_multi_numbers": "<Soru> Verilen metinde \"{query1}\" ve \"{query2}\" ile ilişkili hangi özel büyülü sayılar belirtilmektedir?",
+"question_multi_words": "<Soru> Verilen metinde \"{query1}\" ve \"{query2}\" ile ilişkili hangi özel büyülü kelimeler belirtilmektedir?",
+"please_list": "Lütfen geçerli olan tüm öğeleri listeleyin.",
+"if_no_numbers": "Bu tür sayılar yoksa lütfen \"yok\" yanıtını verin.</Soru>\n\n\n",
+"if_no_words": "Bu tür kelimeler yoksa lütfen \"yok\" yanıtını verin.</Soru>\n\n\n",
+"answer_prefix": "Lütfen yanıtınızı aşağıdaki formatta verin:\n",
+"answer_words": "<Cevap> Tüm kelimeleri buraya listeleyin </Cevap>",
+"answer_numbers": "<Cevap> Tüm sayıları buraya listeleyin </Cevap>",
+"none": "yok"
+}

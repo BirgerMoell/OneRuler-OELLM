@@ -1,0 +1,8 @@
+Žemiau pateikiamas sunumeruotas žodžių sąrašas. Tarp šių žodžių kai kurie pasitaiko dažniau nei kiti. Įsiminkite tuos, kurie pasitaiko dažniausiai.
+
+<Sąrašas> {context} </Sąrašas>
+
+<Klausimas> Kokie 10 dažniausių žodžių aukščiau pateiktame sąraše? </Klausimas>
+
+Prašome pateikti savo atsakymą šiuo formatu:
+<Atsakymas> Išvardinkite žodžius čia </Atsakymas>

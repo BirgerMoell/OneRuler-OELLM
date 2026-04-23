@@ -1,0 +1,16 @@
+{
+"task": "Lūdzu, izlasiet un iegaumējiet tālāk esošo tekstu. Vēlāk es jums par to jautāšu.\n\n<Teksts>\n{context}\n</Teksts>\n\n",
+"needle_words": "Īpašais maģiskais vārds priekš \"{key}\" ir: {value} ",
+"needle_numbers": "Īpašais maģiskais skaitlis priekš \"{key}\" ir: {value} ",
+"question_single_numbers": "<Jautājums> Kādi īpašie maģiskie skaitļi, kas saistīti ar \"{query1}\", ir minēti sniegtajā tekstā?",
+"question_single_words": "<Jautājums> Kādi īpašie maģiskie vārdi, kas saistīti ar \"{query1}\", ir minēti sniegtajā tekstā?",
+"question_multi_numbers": "<Jautājums> Kādi īpašie maģiskie skaitļi, kas saistīti ar \"{query1}\" un \"{query2}\", ir minēti sniegtajā tekstā?",
+"question_multi_words": "<Jautājums> Kādi īpašie maģiskie vārdi, kas saistīti ar \"{query1}\" un \"{query2}\", ir minēti sniegtajā tekstā?",
+"please_list": "Lūdzu, uzskaitiet visus piemērotos.",
+"if_no_numbers": "Ja šādi skaitļi nepastāv, lūdzu atbildiet \"nav\".</Jautājums>\n\n\n",
+"if_no_words": "Ja šādi vārdi nepastāv, lūdzu atbildiet \"nav\".</Jautājums>\n\n\n",
+"answer_prefix": "Lūdzu, sniedziet atbildi šādā formātā:\n",
+"answer_words": "<Atbilde> Uzskaitiet visus vārdus šeit </Atbilde>",
+"answer_numbers": "<Atbilde> Uzskaitiet visus skaitļus šeit </Atbilde>",
+"none": "nav"
+}

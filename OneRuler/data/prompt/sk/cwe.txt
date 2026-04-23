@@ -1,0 +1,8 @@
+Nižšie je očíslovaný zoznam slov. Spomedzi týchto slov, niektoré sa objavujú častejšie ako iné. Zapamätajte si tie, ktoré sa objavujú najčastejšie.
+
+<Zoznam> {context} </Zoznam>
+
+<Otázka> Aké je 10 najčastejších slov v hornom zozname? </Otázka>
+
+Prosím, poskytnite svoju odpoveď v nasledujúcom formáte:
+<Odpoveď> Uveďte slová tu </Odpoveď>

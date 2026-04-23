@@ -1,0 +1,8 @@
+Hei ënnen steet eng nummeréiert Lëscht vun Wierder. Ënner dëse Wierder kommen e puer méi oft vir wéi aner. Lär déi auswendeg déi am meeschten optrieden.
+
+<Lëscht> {context} </Lëscht>
+
+<Fro> Wéi sinn déi 10 heefegste Wierder an der Lëscht hei uewen? </Fro>
+
+Gitt w.e.g. Är Äntwert am folgenden Format:
+<Äntwert> Lëscht d'Wierder hei </Äntwert>

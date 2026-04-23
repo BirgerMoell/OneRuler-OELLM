@@ -1,0 +1,8 @@
+Spodaj je oštevilčen seznam besed. Med temi besedami se nekatere pojavljajo pogosteje kot druge. Zapomnite si tiste, ki se pojavljajo najpogosteje.
+
+<Seznam> {context} </Seznam>
+
+<Vprašanje> Katerih je 10 najpogostejših besed na zgornjem seznamu? </Vprašanje>
+
+Prosim, navedite odgovor v naslednji obliki:
+<Odgovor> Navedite besede tukaj </Odgovor>

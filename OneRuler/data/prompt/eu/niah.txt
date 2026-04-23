@@ -1,0 +1,16 @@
+{
+"task": "Irakurri eta memorizatu ondoko testua mesedez. Geroago galdetuko dizut hari buruz.\n\n<Testua>\n{context}\n</Testua>\n\n",
+"needle_words": "\"{key}\" hitz magikoaren balio berezia: {value} ",
+"needle_numbers": "\"{key}\" zenbaki magikoaren balio berezia: {value} ",
+"question_single_numbers": "<Galdera> Zein dira \"{query1}\"-rekin lotutako zenbaki berezi magikoak testu emandakoan aipatzen direnak?",
+"question_single_words": "<Galdera> Zein dira \"{query1}\"-rekin lotutako hitz berezi magikoak testu emandakoan aipatzen direnak?",
+"question_multi_numbers": "<Galdera> Zein dira \"{query1}\" eta \"{query2}\"-rekin lotutako zenbaki berezi magikoak testu emandakoan aipatzen direnak?",
+"question_multi_words": "<Galdera> Zein dira \"{query1}\" eta \"{query2}\"-rekin lotutako hitz berezi magikoak testu emandakoan aipatzen direnak?",
+"please_list": "Mesedez, zerrendatu aplikatzen diren guztiak.",
+"if_no_numbers": "Horrelako zenbakirik ez bada, mesedez erantzun \"bat ere ez\".</Galdera>\n\n\n",
+"if_no_words": "Horrelako hitzik ez bada, mesedez erantzun \"bat ere ez\".</Galdera>\n\n\n",
+"answer_prefix": "Mesedez, eman zure erantzuna formatu honetan:\n",
+"answer_words": "<Erantzuna> Zerrendatu hitz guztiak hemen </Erantzuna>",
+"answer_numbers": "<Erantzuna> Zerrendatu zenbaki guztiak hemen </Erantzuna>",
+"none": "bat ere ez"
+}

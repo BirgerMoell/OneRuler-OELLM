@@ -1,0 +1,16 @@
+{
+"task": "Palun loe ja jäta meelde allolev tekst. Ma küsin selle kohta hiljem.\n\n<Tekst>\n{context}\n</Tekst>\n\n",
+"needle_words": "Eriline maagiline sõna \"{key}\" jaoks on: {value} ",
+"needle_numbers": "Eriline maagiline number \"{key}\" jaoks on: {value} ",
+"question_single_numbers": "<Küsimus> Milliseid erilisi maagilisi numbreid seoses \"{query1}\"-ga mainitakse esitatud tekstis?",
+"question_single_words": "<Küsimus> Milliseid erilisi maagilisi sõnu seoses \"{query1}\"-ga mainitakse esitatud tekstis?",
+"question_multi_numbers": "<Küsimus> Milliseid erilisi maagilisi numbreid seoses \"{query1}\" ja \"{query2}\"-ga mainitakse esitatud tekstis?",
+"question_multi_words": "<Küsimus> Milliseid erilisi maagilisi sõnu seoses \"{query1}\" ja \"{query2}\"-ga mainitakse esitatud tekstis?",
+"please_list": "Palun loetlege kõik sobivad.",
+"if_no_numbers": "Kui selliseid numbreid ei eksisteeri, palun vastake \"puudub\".</Küsimus>\n\n\n",
+"if_no_words": "Kui selliseid sõnu ei eksisteeri, palun vastake \"puudub\".</Küsimus>\n\n\n",
+"answer_prefix": "Palun esitage oma vastus järgmises vormingus:\n",
+"answer_words": "<Vastus> Loetlege kõik sõnad siin </Vastus>",
+"answer_numbers": "<Vastus> Loetlege kõik numbrid siin </Vastus>",
+"none": "puudub"
+}

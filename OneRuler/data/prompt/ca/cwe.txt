@@ -1,0 +1,8 @@
+A continuació hi ha una llista numerada de paraules. Entre aquestes paraules, algunes apareixen amb més freqüència que d'altres. Memoritzeu les que apareixen amb més freqüència.
+
+<Llista> {context} </Llista>
+
+<Pregunta> Quines són les 10 paraules més comunes de la llista anterior? </Pregunta>
+
+Si us plau, proporcioneu la vostra resposta en el format següent:
+<Resposta> Enumereu les paraules aquí </Resposta>

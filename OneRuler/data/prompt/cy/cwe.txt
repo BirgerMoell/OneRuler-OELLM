@@ -1,0 +1,8 @@
+Isod mae rhestr rifodd o eiriau. Ymysg y geiriau hyn, mae rhai'n ymddangos yn amlach nag eraill. Cofiwch y rhai sy'n ymddangos amlaf.
+
+<Rhestr> {context} </Rhestr>
+
+<Cwestiwn> Beth yw'r 10 gair mwyaf cyffredin yn y rhestr uchod? </Cwestiwn>
+
+Darparwch eich ateb yn y fformat canlynol os gwelwch yn dda:
+<Ateb> Rhestrwch y geiriau yma </Ateb>

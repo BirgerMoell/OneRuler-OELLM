@@ -1,0 +1,16 @@
+{
+"task": "Vă rugăm să citiți și să memorați textul de mai jos. Vă voi întreba despre el mai târziu.\n\n<Text>\n{context}\n</Text>\n\n",
+"needle_words": "Cuvântul magic special pentru \"{key}\" este: {value} ",
+"needle_numbers": "Numărul magic special pentru \"{key}\" este: {value} ",
+"question_single_numbers": "<Întrebare> Ce numere magice speciale asociate cu \"{query1}\" sunt menționate în textul furnizat?",
+"question_single_words": "<Întrebare> Ce cuvinte magice speciale asociate cu \"{query1}\" sunt menționate în textul furnizat?",
+"question_multi_numbers": "<Întrebare> Ce numere magice speciale asociate cu \"{query1}\" și \"{query2}\" sunt menționate în textul furnizat?",
+"question_multi_words": "<Întrebare> Ce cuvinte magice speciale asociate cu \"{query1}\" și \"{query2}\" sunt menționate în textul furnizat?",
+"please_list": "Vă rugăm să listați toate cele aplicabile.",
+"if_no_numbers": "Dacă nu există astfel de numere, vă rugăm să răspundeți \"niciunul\".</Întrebare>\n\n\n",
+"if_no_words": "Dacă nu există astfel de cuvinte, vă rugăm să răspundeți \"niciunul\".</Întrebare>\n\n\n",
+"answer_prefix": "Vă rugăm să furnizați răspunsul în formatul următor:\n",
+"answer_words": "<Răspuns> Listați toate cuvintele aici </Răspuns>",
+"answer_numbers": "<Răspuns> Listați toate numerele aici </Răspuns>",
+"none": "niciunul"
+}

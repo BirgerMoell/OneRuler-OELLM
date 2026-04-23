@@ -1,15 +1,25 @@
 """OpenEuroLLM language support helpers for OneRuler.
 
 The original OneRuler release ships native resources for 26 languages.  This
-module adds a synthetic fallback for OpenEuroLLM languages that are not present
-yet, so the benchmark can be generated end-to-end while native translations,
-books, and dictionaries are being collected.
+module adds support for 21 additional OpenEuroLLM languages (bg, hr, et, el,
+ga, lv, lt, mt, ro, sk, sl, sq, eu, bs, ca, gl, is, lb, mk, tr, cy).
+
+Each language has:
+  - Translated NIAH and CWE prompt files in data/prompt/{lang}/
+  - 100-noun reference translations in data/vocab/100_noun_list_translated.tsv
+  - A POS word list in data/vocab/dictionaries/{Language}/{Language}.csv
+
+When a book haystack is not available for a language, synthetic sentences are
+generated as a fallback via synthetic_book_sentences().
 """
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Iterable
+
+_DATA_DIR = Path(__file__).parent / "data"
 
 
 OELLM_LANGUAGES = {
@@ -186,6 +196,9 @@ def synthetic_book_sentences(lang: str, count: int = 2048) -> list[str]:
 
 
 def niah_prompt_dict(lang: str) -> dict[str, str]:
+    prompt_file = _DATA_DIR / "prompt" / lang.lower() / "niah.txt"
+    if prompt_file.exists():
+        return json.loads(prompt_file.read_text(encoding="utf-8"))
     none = none_words(lang)[0]
     return {
         "task": "Please read and memorize the text below. I will ask you about it later.\n\n<text>\n{context}\n</text>\n\n",
@@ -207,6 +220,9 @@ def niah_prompt_dict(lang: str) -> dict[str, str]:
 
 def cwe_prompt(lang: str) -> str:
     _require_missing_or_oellm(lang)
+    prompt_file = _DATA_DIR / "prompt" / lang.lower() / "cwe.txt"
+    if prompt_file.exists():
+        return prompt_file.read_text(encoding="utf-8")
     return (
         "Below is a numbered list of words. In these words, some appear more "
         "often than others. Memorize the ones that appear most often.\n"

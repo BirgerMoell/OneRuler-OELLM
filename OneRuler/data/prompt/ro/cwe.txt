@@ -1,0 +1,8 @@
+Mai jos este o listă numerotată de cuvinte. Printre aceste cuvinte, unele apar mai des decât altele. Memorizați-le pe cele care apar cel mai des.
+
+<Listă> {context} </Listă>
+
+<Întrebare> Care sunt cele mai frecvente 10 cuvinte din lista de mai sus? </Întrebare>
+
+Vă rugăm să furnizați răspunsul în formatul următor:
+<Răspuns> Listați cuvintele aici </Răspuns>

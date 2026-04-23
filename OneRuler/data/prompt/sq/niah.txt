@@ -1,0 +1,16 @@
+{
+"task": "Ju lutem lexoni dhe mbani mend tekstin më poshtë. Do t'ju pyes për të më vonë.\n\n<Tekst>\n{context}\n</Tekst>\n\n",
+"needle_words": "Fjala e veçantë magjike për \"{key}\" është: {value} ",
+"needle_numbers": "Numri i veçantë magjik për \"{key}\" është: {value} ",
+"question_single_numbers": "<Pyetje> Cilët numra të veçantë magjikë të lidhur me \"{query1}\" përmenden në tekstin e dhënë?",
+"question_single_words": "<Pyetje> Cilat fjalë të veçanta magjike të lidhura me \"{query1}\" përmenden në tekstin e dhënë?",
+"question_multi_numbers": "<Pyetje> Cilët numra të veçantë magjikë të lidhur me \"{query1}\" dhe \"{query2}\" përmenden në tekstin e dhënë?",
+"question_multi_words": "<Pyetje> Cilat fjalë të veçanta magjike të lidhura me \"{query1}\" dhe \"{query2}\" përmenden në tekstin e dhënë?",
+"please_list": "Ju lutem listoni të gjitha që vlejnë.",
+"if_no_numbers": "Nëse nuk ekzistojnë numra të tillë, ju lutem përgjigjuni \"asnjë\".</Pyetje>\n\n\n",
+"if_no_words": "Nëse nuk ekzistojnë fjalë të tilla, ju lutem përgjigjuni \"asnjë\".</Pyetje>\n\n\n",
+"answer_prefix": "Ju lutem jepni përgjigjen tuaj në formatin e mëposhtëm:\n",
+"answer_words": "<Përgjigje> Listoni të gjitha fjalët këtu </Përgjigje>",
+"answer_numbers": "<Përgjigje> Listoni të gjitha numrat këtu </Përgjigje>",
+"none": "asnjë"
+}

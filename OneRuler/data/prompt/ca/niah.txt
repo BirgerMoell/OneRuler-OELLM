@@ -1,0 +1,16 @@
+{
+"task": "Llegiu i memoritzeu el text que hi ha a continuació si us plau. Més tard us en preguntaré.\n\n<Text>\n{context}\n</Text>\n\n",
+"needle_words": "La paraula màgica especial per a \"{key}\" és: {value} ",
+"needle_numbers": "El nombre màgic especial per a \"{key}\" és: {value} ",
+"question_single_numbers": "<Pregunta> Quins números màgics especials associats a \"{query1}\" s'esmenten en el text proporcionat?",
+"question_single_words": "<Pregunta> Quines paraules màgiques especials associades a \"{query1}\" s'esmenten en el text proporcionat?",
+"question_multi_numbers": "<Pregunta> Quins números màgics especials associats a \"{query1}\" i \"{query2}\" s'esmenten en el text proporcionat?",
+"question_multi_words": "<Pregunta> Quines paraules màgiques especials associades a \"{query1}\" i \"{query2}\" s'esmenten en el text proporcionat?",
+"please_list": "Si us plau, enumereu-ne tots els que s'apliquen.",
+"if_no_numbers": "Si no existeixen tals números, si us plau, responeu \"cap\".</Pregunta>\n\n\n",
+"if_no_words": "Si no existeixen tals paraules, si us plau, responeu \"cap\".</Pregunta>\n\n\n",
+"answer_prefix": "Si us plau, proporcioneu la vostra resposta en el format següent:\n",
+"answer_words": "<Resposta> Enumereu totes les paraules aquí </Resposta>",
+"answer_numbers": "<Resposta> Enumereu tots els números aquí </Resposta>",
+"none": "cap"
+}

@@ -1,0 +1,8 @@
+U nastavku je numeriran popis riječi. Među tim riječima, neke se pojavljuju češće od drugih. Zapamtite one koje se pojavljuju najčešće.
+
+<Popis> {context} </Popis>
+
+<Pitanje> Kojih je 10 najčešćih riječi na gornjem popisu? </Pitanje>
+
+Molim navedite odgovor u sljedećem formatu:
+<Odgovor> Navedite riječi ovdje </Odgovor>

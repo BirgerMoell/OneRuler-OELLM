@@ -1,0 +1,8 @@
+Thíos tá liosta uimhrithe focal. Sa liosta seo, tagann roinnt focal níos minice ná cinn eile. Meabhraigh na cinn a thagann is minice.
+
+<Liosta> {context} </Liosta>
+
+<Ceist> Cad iad na 10 bhfocal is coitianta sa liosta thuas? </Ceist>
+
+Cuir d'fhreagra sa bhformáid seo a leanas le do thoil:
+<Freagra> Liostaigh na focail anseo </Freagra>

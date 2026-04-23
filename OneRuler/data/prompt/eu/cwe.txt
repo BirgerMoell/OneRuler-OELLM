@@ -1,0 +1,8 @@
+Jarraian hitzen zerrenda zenbakitua dago. Hitz hauen artean, batzuk besteek baino maizago agertzen dira. Gogoan hartu gehienetan agertzen direnak.
+
+<Zerrenda> {context} </Zerrenda>
+
+<Galdera> Zein dira gorako zerrendako 10 hitz arruntenak? </Galdera>
+
+Mesedez, eman zure erantzuna formatu honetan:
+<Erantzuna> Zerrendatu hitzak hemen </Erantzuna>

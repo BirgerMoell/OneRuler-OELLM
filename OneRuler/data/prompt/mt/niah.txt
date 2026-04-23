@@ -1,0 +1,16 @@
+{
+"task": "Jekk jogħġbok aqra u ftakar fit-test hawn taħt. Wara se nistaqsik dwaru.\n\n<Test>\n{context}\n</Test>\n\n",
+"needle_words": "Il-kelma maġika speċjali għal \"{key}\" hi: {value} ",
+"needle_numbers": "In-numru maġiku speċjali għal \"{key}\" hu: {value} ",
+"question_single_numbers": "<Mistoqsija> Liema numri maġiċi speċjali assoċjati ma' \"{query1}\" huma msemmija fit-test mogħti?",
+"question_single_words": "<Mistoqsija> Liema kelmiet maġiċi speċjali assoċjati ma' \"{query1}\" huma msemmija fit-test mogħti?",
+"question_multi_numbers": "<Mistoqsija> Liema numri maġiċi speċjali assoċjati ma' \"{query1}\" u \"{query2}\" huma msemmija fit-test mogħti?",
+"question_multi_words": "<Mistoqsija> Liema kelmiet maġiċi speċjali assoċjati ma' \"{query1}\" u \"{query2}\" huma msemmija fit-test mogħti?",
+"please_list": "Jekk jogħġbok elenca dawk kollha li japplikaw.",
+"if_no_numbers": "Jekk ma jeżistux numri bħal dawn, jekk jogħġbok wieġeb \"xejn\".</Mistoqsija>\n\n\n",
+"if_no_words": "Jekk ma jeżistux kelmiet bħal dawn, jekk jogħġbok wieġeb \"xejn\".</Mistoqsija>\n\n\n",
+"answer_prefix": "Jekk jogħġbok agħti t-tweġiba tiegħek fil-format li ġej:\n",
+"answer_words": "<Tweġiba> Elenca l-kelmiet kollha hawn </Tweġiba>",
+"answer_numbers": "<Tweġiba> Elenca n-numri kollha hawn </Tweġiba>",
+"none": "xejn"
+}

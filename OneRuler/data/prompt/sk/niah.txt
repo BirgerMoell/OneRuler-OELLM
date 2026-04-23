@@ -1,0 +1,16 @@
+{
+"task": "Prečítajte si a zapamätajte si text nižšie. Neskôr sa vás na neho opýtam.\n\n<Text>\n{context}\n</Text>\n\n",
+"needle_words": "Špeciálne magické slovo pre \"{key}\" je: {value} ",
+"needle_numbers": "Špeciálne magické číslo pre \"{key}\" je: {value} ",
+"question_single_numbers": "<Otázka> Aké špeciálne magické čísla súvisiace s \"{query1}\" sú uvedené v poskytnutom texte?",
+"question_single_words": "<Otázka> Aké špeciálne magické slová súvisiace s \"{query1}\" sú uvedené v poskytnutom texte?",
+"question_multi_numbers": "<Otázka> Aké špeciálne magické čísla súvisiace s \"{query1}\" a \"{query2}\" sú uvedené v poskytnutom texte?",
+"question_multi_words": "<Otázka> Aké špeciálne magické slová súvisiace s \"{query1}\" a \"{query2}\" sú uvedené v poskytnutom texte?",
+"please_list": "Prosím, uveďte všetky, ktoré sa vzťahujú.",
+"if_no_numbers": "Ak takéto čísla neexistujú, prosím odpovedzte \"žiadne\".</Otázka>\n\n\n",
+"if_no_words": "Ak takéto slová neexistujú, prosím odpovedzte \"žiadne\".</Otázka>\n\n\n",
+"answer_prefix": "Prosím, poskytnite svoju odpoveď v nasledujúcom formáte:\n",
+"answer_words": "<Odpoveď> Uveďte všetky slová tu </Odpoveď>",
+"answer_numbers": "<Odpoveď> Uveďte všetky čísla tu </Odpoveď>",
+"none": "žiadne"
+}
