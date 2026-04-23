@@ -117,12 +117,12 @@ def build_example(lang: str, lang_idx: int, q_idx: int) -> dict[str, object]:
     }
 
 
-def call_ollama(model: str, prompt: str, url: str) -> str:
+def call_ollama(model: str, prompt: str, url: str, num_predict: int = NUM_PREDICT) -> str:
     payload = {
         "model": model,
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0, "top_p": 1, "num_predict": NUM_PREDICT},
+        "options": {"temperature": 0, "top_p": 1, "num_predict": num_predict},
     }
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
@@ -169,7 +169,7 @@ def run(args: argparse.Namespace) -> int:
                 error = ""
             else:
                 try:
-                    response_text = call_ollama(args.model, str(example["input"]), args.ollama_url)
+                    response_text = call_ollama(args.model, str(example["input"]), args.ollama_url, args.num_predict)
                     status = "ok"
                     error = ""
                 except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
@@ -254,6 +254,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "eval_results" / "mini_eval")
     parser.add_argument("--languages", nargs="+", help="Subset of language codes")
     parser.add_argument("--backend", choices=["ollama", "oracle"], default="ollama")
+    parser.add_argument("--num-predict", type=int, default=NUM_PREDICT, help="Max tokens to generate per response")
     return parser.parse_args()
 
 

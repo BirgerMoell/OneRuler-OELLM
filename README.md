@@ -19,9 +19,38 @@ This local fork adds runtime support for the 38 languages listed by the OpenEuro
 * EU official plus English: `bg`, `hr`, `cs`, `da`, `nl`, `et`, `fi`, `fr`, `de`, `el`, `hu`, `ga`, `it`, `lv`, `lt`, `mt`, `pl`, `pt`, `ro`, `sk`, `sl`, `es`, `sv`, `en`
 * Additional European: `sq`, `eu`, `bs`, `ca`, `gl`, `is`, `lb`, `mk`, `no`, `ru`, `sr`, `tr`, `uk`, `cy`
 
-The original OneRuler resources are still used for languages that already shipped with the benchmark. Missing OpenEuroLLM languages are supported through `OneRuler/oellm_support.py`, which provides synthetic fallback prompts, synthetic distractor text, generated noun lists, generated POS vocabularies, punctuation handling, and translated `none` labels.
+The original OneRuler resources are still used for languages that already shipped with the benchmark. The 21 newly added OELLM languages (`bg`, `hr`, `et`, `el`, `ga`, `lv`, `lt`, `mt`, `ro`, `sk`, `sl`, `sq`, `eu`, `bs`, `ca`, `gl`, `is`, `lb`, `mk`, `tr`, `cy`) each have:
 
-These fallback resources are meant to make experiments runnable and reproducible. They should be replaced or validated with native-speaker prompt translations, real distractor texts, and real dictionaries before using the scores as a publishable multilingual benchmark.
+* **Translated NIAH and CWE prompt files** in `OneRuler/data/prompt/{lang}/`
+* **100 translated nouns** added as a column in `OneRuler/data/vocab/100_noun_list_translated.tsv`
+* **A POS word list** in `OneRuler/data/vocab/dictionaries/{Language}/{Language}.csv`
+
+When no book haystack is available for a language, the benchmark uses the translated noun list to construct distractor sentences, keeping the context in the target language rather than falling back to generated nonsense.
+
+These resources are meant to make experiments runnable and reproducible. They should be validated with native-speaker prompt reviews and real distractor texts before using the scores as a publishable multilingual benchmark.
+
+## Mini Eval — NIAH baseline across all 38 languages
+
+A lightweight evaluation script (`scripts/run_oellm_mini_eval.py`) runs 2 NIAH questions per language via a local Ollama model and writes results to `eval_results/mini_eval/`. Results use real translated nouns as haystack distractors.
+
+To reproduce:
+```bash
+# install Ollama: https://ollama.com
+ollama pull qwen2:1.5b
+python scripts/run_oellm_mini_eval.py --model qwen2:1.5b
+```
+
+Baseline results (NIAH single, 2 questions per language, real-word haystack):
+
+| Model | Avg accuracy | Languages | Runtime |
+|-------|-------------|-----------|---------|
+| `qwen2:0.5b` | 21% | 38/38 | ~20s |
+| `qwen2:1.5b` | 20% | 38/38 | ~50s |
+| `gemma4` (google/gemma-4-E4B, Q4) | **82%** | 38/38 | ~520s |
+
+> Note: `--num-predict 512` is required for `gemma4`; the default 128 truncates its output.
+
+Full per-language results are in `eval_results/mini_eval/`.
 
 ## 🗃️ Data Generation
 
