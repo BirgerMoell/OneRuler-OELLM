@@ -32,10 +32,10 @@ from eval.evaluate import evaluate_jsonl
 
 DEFAULT_MODEL = "qwen2:0.5b"
 DEFAULT_OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-QUESTIONS_PER_LANG = 2
+DEFAULT_QUESTIONS = 2
 CONTEXT_SENTENCES = 20
 NUM_PREDICT = 128
-TIMEOUT = 120
+TIMEOUT = 180
 TASK = "niah_single"
 
 _NOUN_TSV = REPO_ROOT / "OneRuler" / "data" / "vocab" / "100_noun_list_translated.tsv"
@@ -86,7 +86,7 @@ def load_prompt(lang: str) -> dict[str, str]:
     return niah_prompt_dict(lang)
 
 
-def build_example(lang: str, lang_idx: int, q_idx: int) -> dict[str, object]:
+def build_example(lang: str, lang_idx: int, q_idx: int, n_questions: int) -> dict[str, object]:
     template = load_prompt(lang)
     unique_idx = lang_idx * 100 + q_idx
     key = f"oellm{lang}{q_idx:02d}"
@@ -94,7 +94,7 @@ def build_example(lang: str, lang_idx: int, q_idx: int) -> dict[str, object]:
 
     sentences = _real_sentences(lang, CONTEXT_SENTENCES + 10)
     needle = template["needle_numbers"].format(key=key, value=value).strip()
-    insert_at = max(1, (len(sentences) * (q_idx + 1)) // (QUESTIONS_PER_LANG + 1))
+    insert_at = max(1, (len(sentences) * (q_idx + 1)) // (n_questions + 1))
     parts = sentences[:insert_at] + [needle] + sentences[insert_at:CONTEXT_SENTENCES]
     context = " ".join(parts)
 
@@ -160,8 +160,8 @@ def run(args: argparse.Namespace) -> int:
         lang_accs = []
         lang_errors = 0
 
-        for q_idx in range(QUESTIONS_PER_LANG):
-            example = build_example(lang, lang_idx, q_idx)
+        for q_idx in range(args.questions):
+            example = build_example(lang, lang_idx, q_idx, args.questions)
 
             if args.backend == "oracle":
                 response_text = f"<Answer>{example['outputs'][0]}</Answer>"
@@ -193,7 +193,7 @@ def run(args: argparse.Namespace) -> int:
 
         avg_acc = eval_result["avg_acc"]
         lang_accs.append(avg_acc)
-        status_final = "error" if lang_errors == QUESTIONS_PER_LANG else "ok"
+        status_final = "error" if lang_errors == args.questions else "ok"
 
         summary_rows.append(
             {
@@ -201,7 +201,7 @@ def run(args: argparse.Namespace) -> int:
                 "language": lang_name,
                 "status": status_final,
                 "accuracy": f"{avg_acc:.2f}",
-                "questions": QUESTIONS_PER_LANG,
+                "questions": args.questions,
                 "errors": lang_errors,
             }
         )
@@ -224,7 +224,7 @@ def run(args: argparse.Namespace) -> int:
     md_lines = [
         f"# OELLM Mini Eval — {model_label}",
         f"",
-        f"*{QUESTIONS_PER_LANG} NIAH questions per language · {timestamp} · {elapsed:.0f}s total*",
+        f"*{args.questions} NIAH questions per language · {timestamp} · {elapsed:.0f}s total*",
         f"",
         f"| Lang | Language | Accuracy | Status |",
         f"|------|----------|----------|--------|",
@@ -255,6 +255,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--languages", nargs="+", help="Subset of language codes")
     parser.add_argument("--backend", choices=["ollama", "oracle"], default="ollama")
     parser.add_argument("--num-predict", type=int, default=NUM_PREDICT, help="Max tokens to generate per response")
+    parser.add_argument("--questions", type=int, default=DEFAULT_QUESTIONS, help="Questions per language")
     return parser.parse_args()
 
 
