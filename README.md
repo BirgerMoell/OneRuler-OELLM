@@ -60,6 +60,9 @@ Results (NIAH single, 2 questions per language):
 | `gemma3:4b` ([google/gemma-3-4b](https://huggingface.co/google/gemma-3-4b-it), Q4) | harder | 64% | ~141s | — |
 | `gemma4:e2b` ([google/gemma-4-E2B](https://huggingface.co/google/gemma-4-E2B), Q4) | harder | **86%** | ~464s | — |
 | `gemma4` ([google/gemma-4-E4B](https://huggingface.co/google/gemma-4-E4B), Q4) | harder | **91%** | ~726s | — |
+| `openeurollm/datamix-2b-{en,50-50,…,90-10}` | harder\* | 0% | — | base models, no instruction tuning |
+
+\* 500-word context (constrained by 2048-token positional embedding limit)
 
 Full per-language results are in `eval_results/`.
 
@@ -69,6 +72,7 @@ Full per-language results are in `eval_results/`.
 - **Gemma 4 E2B scores 86%** — just 5 points below the E4B despite half the active parameters, completing the run in 64% of the time (~7.7 min vs ~12 min).
 - **Gemma 3 4B scores 64%** — a dense 4B model, noticeably weaker than either MoE Gemma 4 variant on multilingual retrieval.
 - **Norwegian and Serbian score 0%** on the E4B harder eval: the model retrieves the needle correctly but also reports a distractor number (multi-number answer when one is expected). The distractors are working.
+- **OpenEuroLLM datamix-2b models score 0%** across all 38 languages and all six data-mixture ratios (en-only through 90% EU). These are base models without instruction tuning; they generate incoherent continuations rather than following the NIAH prompt format. This is expected — the results serve as a pre-instruction-tuning baseline.
 - **Conclusion:** gemma4 MoE models have strong coverage for all 38 OELLM languages; the E2B is a compelling smaller alternative at 86% accuracy.
 
 ## 🗃️ Data Generation
