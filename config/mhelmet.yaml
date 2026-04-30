@@ -1,0 +1,53 @@
+languages:
+  - bg
+  - hr
+  - cs
+  - da
+  - nl
+  - et
+  - fi
+  - fr
+  - de
+  - el
+  - hu
+  - ga
+  - it
+  - lv
+  - lt
+  - mt
+  - pl
+  - pt
+  - ro
+  - sk
+  - sl
+  - es
+  - sv
+  - en
+  - sq
+  - eu
+  - bs
+  - ca
+  - gl
+  - is
+  - lb
+  - mk
+  - no
+  - ru
+  - sr
+  - tr
+  - uk
+  - cy
+tasks:
+  - recall
+  - rag
+  - rerank
+  - cite
+  - longqa
+  - summ
+  - icl
+lengths:
+  - 8192
+  - 16384
+  - 32768
+num_samples: 50
+

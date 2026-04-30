@@ -14,14 +14,64 @@ This code is based on [RULER's Repo](https://github.com/NVIDIA/RULER).
 
 ## OpenEuroLLM language support
 
-This local fork adds runtime support for the 38 languages listed by the OpenEuroLLM tokenizer:
+This local fork adds runtime support for the 38 languages listed by the OpenEuroLLM tokenizer.
 
 * EU official plus English: `bg`, `hr`, `cs`, `da`, `nl`, `et`, `fi`, `fr`, `de`, `el`, `hu`, `ga`, `it`, `lv`, `lt`, `mt`, `pl`, `pt`, `ro`, `sk`, `sl`, `es`, `sv`, `en`
 * Additional European: `sq`, `eu`, `bs`, `ca`, `gl`, `is`, `lb`, `mk`, `no`, `ru`, `sr`, `tr`, `uk`, `cy`
 
 The original OneRuler resources are still used for languages that already shipped with the benchmark. Missing OpenEuroLLM languages are supported through `OneRuler/oellm_support.py`, which provides synthetic fallback prompts, synthetic distractor text, generated noun lists, generated POS vocabularies, punctuation handling, and translated `none` labels.
 
+All 38 OpenEuroLLM languages are now represented in the native OneRuler resource layout (`prompt`, `books`, and `vocab`) so all data-generation and evaluation paths can use the same format.
+
 These fallback resources are meant to make experiments runnable and reproducible. They should be replaced or validated with native-speaker prompt translations, real distractor texts, and real dictionaries before using the scores as a publishable multilingual benchmark.
+
+## mHELMET: multilingual HELMET-style evaluation
+
+This fork also includes `OneRuler/mhelmet`, a HELMET-inspired benchmark generator for the same 38 OpenEuroLLM languages. HELMET evaluates long-context models across seven broad, application-centric task categories; `mhelmet` mirrors that shape with deterministic multilingual tasks backed by `OneRuler/mhelmet/references.py`.
+
+* `recall`: retrieve an identifier fact from a long context.
+* `rag`: answer from retrieved passages with distractors.
+* `rerank`: order passages by relevance.
+* `cite`: answer and cite the supporting passage label.
+* `longqa`: answer from a long document.
+* `summ`: preserve key facts in a short summary.
+* `icl`: infer a mapping from in-context examples.
+
+Generate a small smoke set:
+
+```bash
+python3 OneRuler/mhelmet/generate.py \
+  --save_dir dataset/mhelmet-smoke \
+  --languages en,sv,fi \
+  --tasks recall,rag,rerank,cite,longqa,summ,icl \
+  --lengths 8192 \
+  --num_samples 5 \
+  --tokenizer_type whitespace \
+  --tokenizer_path whitespace
+```
+
+Generate the default 38-language suite:
+
+```bash
+TOKENIZER_TYPE=openai TOKENIZER_PATH=cl100k_base scripts/run_mhelmet_generation.sh
+```
+
+The reference layer includes native-language entity terms, city/location names, outcome labels, and full native prompt translations for all 38 OpenEuroLLM languages. The gold `outputs` are derived from those references, so tasks such as RAG, long QA, citation, summarization, and ICL require recovering language-specific answers rather than only English synthetic codes.
+
+The output layout is `dataset/mhelmet/{language}/{length}/{task}/validation.jsonl`, using the same `input` and `outputs` fields as OneRuler plus `language`, `language_name`, `task`, and `length` metadata. If `tiktoken` or `transformers` are unavailable, the generator falls back to whitespace token counts; use a model-matched tokenizer for reportable context-length comparisons.
+
+Evaluate a prediction file that has one `response-*` field per row:
+
+```bash
+python3 OneRuler/mhelmet/evaluate.py \
+  --input_path path/to/predictions.jsonl \
+  --output_path path/to/predictions.score.json
+```
+
+As with the OpenEuroLLM OneRuler fallback resources, `mhelmet` is reproducible model-generated benchmark data. It should still be reviewed by native speakers and strengthened with real documents before being treated as a publishable benchmark.
+
+For detailed mHELMET usage, see `OneRuler/mhelmet/README.md`. For the first local
+Gemma/Ollama evaluation report, see `reports/mhelmet_gemma4_e2b_eval.md`.
 
 ## 🗃️ Data Generation
 
